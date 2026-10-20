@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UIMS — Case Study — Fanuel Mutua Nduku</title>
+<meta name="description" content="Case study: UIMS — a multi-tenant information management system built with Python, FastAPI, PostgreSQL, and a C++ vision service.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="index.html">Fanuel Nduku</a>
+    <nav>
+      <a href="index.html#about">About</a>
+      <a href="index.html#projects">Projects</a>
+      <a href="index.html#stack">Stack</a>
+      <a href="index.html#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <section class="hero wrap">
+    <p class="eyebrow"><a href="index.html#projects">← All projects</a></p>
+    <h1>UIMS — Universal Information Management System</h1>
+    <p class="lede">
+      A multi-tenant information platform for institutions that need
+      to manage people, cameras, access events, and compliance in one
+      system. Built as my final-year project and extended well past
+      the coursework requirements.
+    </p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="mailto:ndukuphanuel728@gmail.com?subject=UIMS%20demo%20request">Request a demo</a>
+      <a class="btn btn-ghost" href="index.html#contact">Contact</a>
+    </div>
+  </section>
+
+  <section class="section wrap">
+    <h2>The problem</h2>
+    <p>
+      Institutions run many small systems side by side: an access-control
+      spreadsheet, a visitor logbook, a paper-based incident register, a
+      separate HR system. None of them talk to each other. When someone
+      needs to know "who was in the building at 3pm," or "did this person
+      finish their compliance training," the answer comes from three
+      people and four files.
+    </p>
+    <p>
+      UIMS consolidates these into one place. Every record belongs to a
+      <em>tenant</em> — a single institution. Data never crosses tenants,
+      even by accident. That isolation is not a feature bolted on; it is
+      enforced at the database level.
+    </p>
+  </section>
+
+  <section class="section wrap">
+    <h2>Architecture</h2>
+    <div class="arch-grid">
+      <div class="arch-card">
+        <h3>Backend</h3>
+        <p>Python 3.11 + FastAPI. SQLAlchemy for ORM. Alembic for
+        migrations. Pydantic for request validation.</p>
+      </div>
+      <div class="arch-card">
+        <h3>Database</h3>
+        <p>PostgreSQL 16. Row-Level Security enforced by the database,
+        not by Python. Every request opens a session scoped to a single
+        tenant. Cross-tenant reads require an explicit bypass context
+        that is audited.</p>
+      </div>
+      <div class="arch-card">
+        <h3>Vision service</h3>
+        <p>C++ executable. Facial recognition and license-plate reading
+        via ONNX runtime. Streams events back to the backend over HTTPS.
+        Windows-native today; POSIX port in progress.</p>
+      </div>
+      <div class="arch-card">
+        <h3>Billing (external)</h3>
+        <p>Separate Flask service that owns tenant plan state and invoice
+        records. Syncs to UIMS via a signed webhook. Fail-open by design:
+        if billing is unreachable, tenants keep working and stale data
+        is flagged.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section wrap">
+    <h2>What it does</h2>
+    <ul class="feature-list">
+      <li>
+        <strong>Multi-tenant isolation.</strong>
+        Postgres RLS with a non-bypass application role. Every policy
+        verified by CI on every commit.
+      </li>
+      <li>
+        <strong>Face recognition access events.</strong>
+        A C++ pipeline matches faces against enrolled records; the
+        backend records the event, links it to a person, and notifies
+        configured channels.
+      </li>
+      <li>
+        <strong>License plate recognition.</strong>
+        Same pipeline, separate model. Entry and exit events for
+        vehicles; contract test suite locked in even though the producer
+        is deferred.
+      </li>
+      <li>
+        <strong>Attendance &amp; visitors.</strong>
+        Per-tenant attendance logs, visitor check-in/out, and search
+        across both.
+      </li>
+      <li>
+        <strong>Compliance &amp; DSAR.</strong>
+        Data Subject Access Requests and erasure, handled transactionally
+        across eleven foreign keys tied to a person record.
+      </li>
+      <li>
+        <strong>Billing, kept separate.</strong>
+        Tenant plans, invoices, and payments are owned by a dedicated
+        service, not folded into the app. That separation keeps the
+        money-handling code auditable and easier to reason about.
+      </li>
+    </ul>
+  </section>
+
+  <section class="section wrap">
+    <h2>What I learned building it</h2>
+    <p>
+      <strong>Row-level security is not optional.</strong> An early CI
+      run caught that our application role had <code>BYPASSRLS</code>
+      silently set — every policy looked like it was working and was
+      actually inert. The fix was to have CI create the role as
+      <code>NOSUPERUSER NOBYPASSRLS</code> from the start and verify
+      the policy still runs.
+    </p>
+    <p>
+      <strong>Two systems with two databases will disagree about time.</strong>
+      A billing service and UIMS both stored datetime columns, but one
+      was <code>timestamp with time zone</code> and the other
+      <code>timestamp without time zone</code>. Same wall clock, three
+      hours apart as instants. Fixing it required a migration on both
+      sides plus a change in how every datetime is constructed. Worth
+      doing early; expensive to do later.
+    </p>
+    <p>
+      <strong>Gap-free numbering is not a Postgres sequence.</strong>
+      Sequences do not roll back. If an invoice insert fails after the
+      sequence advances, the number is consumed and the sequence has a
+      gap — which is not acceptable for tax-compliant invoicing. The
+      replacement is an atomic counter row that increments inside the
+      same transaction as the invoice insert.
+    </p>
+  </section>
+
+  <section class="section wrap">
+    <h2>Status</h2>
+    <p>
+      UIMS is under active development. The backend and RLS layer are
+      production-shaped; the vision service runs on Windows and is being
+      ported to macOS and Linux. Roughly 180 automated tests pass locally
+      and in CI on every commit. Billing and admin tooling live in a
+      separate service.
+    </p>
+    <p>
+      I'm happy to walk through the code, the schema, or the sync
+      contract with anyone interested. Reach out via
+      <a href="mailto:ndukuphanuel728@gmail.com">email</a>.
+    </p>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p>© 2026 Fanuel Mutua Nduku. <a href="index.html">Back to portfolio</a></p>
+  </div>
+</footer>
+
+</body>
+</html>

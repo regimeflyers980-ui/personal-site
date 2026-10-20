@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fanuel Mutua Nduku — ICT Graduate & Developer</title>
+<meta name="description" content="Fanuel Mutua Nduku — ICT graduate building web systems in Python, PostgreSQL, and C++. Author of UIMS, a multi-tenant information management system with facial recognition.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="index.html">Fanuel Nduku</a>
+    <nav>
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#stack">Stack</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero wrap">
+    <p class="eyebrow">ICT Graduate · Nairobi, Kenya</p>
+    <h1>Hi, I'm Fanuel.</h1>
+    <p class="lede">
+      I build web systems that hold real data for real institutions —
+      multi-tenant platforms, database design, and the interfaces
+      that sit on top of them.
+    </p>
+    <p class="lede">
+      Currently finishing my Diploma in Information Communication Technology
+      at The Michuki National Polytechnic, and looking for a Graduate
+      Trainee role in IT support, software development, or data management.
+    </p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="#projects">See my work</a>
+      <a class="btn btn-ghost" href="mailto:ndukuphanuel728@gmail.com">Get in touch</a>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="section wrap">
+    <h2>About</h2>
+    <p>
+      I'm a self-driven learner. When my diploma program did not include
+      an attachment, I chose to build a real system instead — Universal
+      Information Management System (UIMS), a multi-tenant platform for
+      institutions that need to manage people, cameras, and compliance in
+      one place. Building it taught me what coursework does not: how
+      production PostgreSQL Row-Level Security works, why datetime
+      handling between systems is harder than it looks, and how to ship
+      a feature end-to-end.
+    </p>
+    <p>
+      I care about systems that are correct before they are clever.
+      Invoice numbers that cannot skip. Audit logs that record who
+      changed what. Datetimes that mean the same instant on both sides
+      of an API. These are small things individually, and they are the
+      difference between a demo and something a business can rely on.
+    </p>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects" class="section wrap">
+    <h2>Projects</h2>
+
+    <a class="project-card" href="uims.html">
+      <div class="project-card-body">
+        <div class="project-card-head">
+          <h3>UIMS — Universal Information Management System</h3>
+          <span class="badge">In development</span>
+        </div>
+        <p class="project-tagline">
+          Multi-tenant information platform for institutions.
+          Python/FastAPI backend, PostgreSQL with row-level security,
+          C++ vision service for facial recognition and license-plate
+          reading, external billing service with webhook sync.
+        </p>
+        <p class="project-meta">
+          Python · FastAPI · PostgreSQL 16 · C++ · JavaScript · Bootstrap
+        </p>
+        <span class="project-link">Read the case study →</span>
+      </div>
+    </a>
+
+    <div class="project-card is-muted">
+      <div class="project-card-body">
+        <div class="project-card-head">
+          <h3>More projects coming</h3>
+        </div>
+        <p class="project-tagline">
+          Currently working through production hardening on UIMS — invoice
+          and payment flows, an audit log, two-factor authentication,
+          and an outbound sync contract with a separate billing service.
+          More public work will follow.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- STACK -->
+  <section id="stack" class="section wrap">
+    <h2>Stack</h2>
+    <div class="stack-grid">
+      <div class="stack-col">
+        <h3>Languages</h3>
+        <ul>
+          <li>Python</li>
+          <li>C++ (facial recognition pipeline)</li>
+          <li>JavaScript</li>
+          <li>SQL</li>
+        </ul>
+      </div>
+      <div class="stack-col">
+        <h3>Backend & Data</h3>
+        <ul>
+          <li>FastAPI, Flask, SQLAlchemy</li>
+          <li>PostgreSQL 16 (RLS enforced)</li>
+          <li>Alembic migrations</li>
+          <li>Redis (familiar)</li>
+        </ul>
+      </div>
+      <div class="stack-col">
+        <h3>Frontend</h3>
+        <ul>
+          <li>HTML, CSS, Bootstrap</li>
+          <li>Jinja templates</li>
+          <li>Vanilla JavaScript</li>
+        </ul>
+      </div>
+      <div class="stack-col">
+        <h3>Ops & Tooling</h3>
+        <ul>
+          <li>Git, GitHub Actions CI</li>
+          <li>Linux (WSL), Windows</li>
+          <li>Docker (familiar)</li>
+          <li>Postgres backup &amp; restore</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="section wrap">
+    <h2>Contact</h2>
+    <p>
+      Looking for a Graduate Trainee role in IT support, software development,
+      or data management. I'm happy to talk about UIMS, answer questions
+      about the code, or walk through what a demo would look like for
+      your organisation.
+    </p>
+    <ul class="contact-list">
+      <li><span>Email</span><a href="mailto:ndukuphanuel728@gmail.com">ndukuphanuel728@gmail.com</a></li>
+      <li><span>Phone</span><a href="tel:+254714079916">0714 079 916</a></li>
+      <li><span>GitHub</span><a href="https://github.com/regimeflyers980-ui" rel="noopener">regimeflyers980-ui</a></li>
+    </ul>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p>© 2026 Fanuel Mutua Nduku. Built with static HTML and CSS.</p>
+  </div>
+</footer>
+
+</body>
+</html>
